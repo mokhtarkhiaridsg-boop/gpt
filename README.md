@@ -16,31 +16,48 @@ The full vision plan lives in `/root/.claude/plans/what-would-the-perfect-sorted
 - Next.js 14 (App Router) + TypeScript
 - Tailwind CSS
 - Quran data via [alquran.cloud](https://alquran.cloud) (free, no key)
-- Local-first state (localStorage); no backend in this preview
+- Supabase Postgres (optional — Ummah Trajectory falls back to seed values when unconfigured)
+- Local-first state (localStorage) for personal data
 
 ## Pages
 
 - `/` — landing: hero, the verse, seven pillars, the defensible twelve, what Tamkīn cannot do
 - `/today` — interactive: ayah of the day, salah tracker, dhikr counter, Quran ladder
-- `/ummah` — Ummah Trajectory dashboard with public Index, private Iqāmah Dashboard, civilizational milestones
+- `/circle` — Circle of Twelve with Group Suhoor + drills
+- `/garden` — Sunnah Garden with three plants + catalog + tree counter
+- `/lockdown` — Porn Lockdown one-tap + Phone Lockout timer + explainer
+- `/ummah` — Ummah Trajectory dashboard, sourced from Supabase
 - `/manifesto` — the long-form why
 
 ## Develop
 
 ```sh
 npm install
+cp .env.example .env.local   # optional — fill in if you want live Supabase data
 npm run dev
 ```
 
-Open <http://localhost:3000>.
+Open <http://localhost:3000>. The app runs fine without any env vars set; `/ummah` will show fallback seed values until Supabase is wired up.
 
-## Deploy
+## Database setup (Supabase)
 
-This project is configured to deploy on Vercel out of the box.
+1. Create a new project at <https://supabase.com>
+2. In the SQL Editor, paste and run `supabase/schema.sql`
+3. Copy the project URL and `anon` key from Settings → API
+4. Set them in `.env.local` and in Vercel project settings:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
-1. Push this branch to GitHub.
-2. Import the repo at <https://vercel.com/new>.
-3. No environment variables needed. Build command and output are auto-detected.
+The schema creates two public read-only tables (`ummah_counters`, `milestones`) with Row Level Security enabled. Writes are restricted to `service_role`. The schema file documents the future per-user tables (profiles, salah_logs, salah_pairs, quran_progress, wird_logs, garden_plants, circles, shaytan_log) — all owner-only RLS.
+
+## Deploy to Vercel
+
+1. Open <https://vercel.com/new>
+2. Import this repo
+3. Add the two `NEXT_PUBLIC_SUPABASE_*` env vars (optional — site works without them)
+4. Deploy
+
+Auto-deploy on push will be enabled once the project is imported.
 
 ## License
 
