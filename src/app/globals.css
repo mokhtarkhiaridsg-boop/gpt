@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sand-50: #fdfaf5;
+  --color-sand-100: #f7f1e6;
+  --color-sand-200: #ece0cd;
+  --color-sand-300: #dcc9ac;
+
+  --color-ink-700: #4a4340;
+  --color-ink-800: #2b2624;
+  --color-ink-900: #1a1614;
+
+  --color-clay-400: #d0784f;
+  --color-clay-500: #b4552f;
+  --color-clay-600: #93401f;
+
+  --color-olive-500: #6b7a4a;
+  --color-olive-600: #54613a;
+
+  --color-azur-500: #1f5c99;
+
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-sand-50);
+  color: var(--color-ink-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Le catalogue est en français ; le sélecteur de langue bascule la page en RTL. */
+[dir="rtl"] .flip-rtl {
+  transform: scaleX(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
